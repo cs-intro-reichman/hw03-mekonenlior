@@ -8,8 +8,6 @@ public class Calendar {
 
 	public static void main(String[] args) {
 		year = Integer.parseInt(args[0]);
-		isLeapYearTest(year);
-		nDaysInMonthTest(year);
 		advance();
 	}
 
@@ -82,5 +80,11 @@ public class Calendar {
 
 		// Update the day of the week
 		dayOfWeek = (dayOfWeek + 1) % 7;
+
+		if (month == 12 && dayOfMonth == 31) {
+            System.out.println(dayOfMonth + "/" + month + "/" + year); // Print the last date
+        } else {
+            advance(); // Recursive call for other dates
+        }
 	}
 }
