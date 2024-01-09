@@ -6,9 +6,9 @@ public class Calendar {
     static int year;
     static int nDaysInMonth = 31;
     public static void main(String[] args) {
-        int year = Integer.parseInt(args[0]);
-		isLeapYearTest(year);
-		nDaysInMonthTest(year);
+        year = Integer.parseInt(args[0]);
+        isLeapYearTest(year);
+        nDaysInMonthTest(year);
         advance();
     }
     // Tests the isLeapYear function.
@@ -67,20 +67,16 @@ public class Calendar {
 		}
 
 		if (dayOfMonth == nDaysInMonth) {
-			// If it's the last day of the month, reset to the first day of the next month
-			dayOfMonth = 1;
-			if (month == 12) {
-				// If it's December, reset to January of the next year
-				month = 1;
-				year++;
-			} else {
-				// If it's not December, move to the next month
-				month++;
-			}
-			nDaysInMonth = nDaysInMonth(month, year); // Update the number of days in the new month
-		} else {
-			// If it's not the last day of the month, simply move to the next day
-			dayOfMonth++;
-		}
+            dayOfMonth = 1;
+            if (month == 12) {
+                month = 1;
+                year++;
+            } else {
+                month++;
+            }
+            nDaysInMonth = nDaysInMonth(month, year); // Update the number of days in the new month
+        } else {
+            dayOfMonth++;
+        }
 	}
 }
