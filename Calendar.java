@@ -58,14 +58,15 @@ public class Calendar {
 
 	// Advances the date (day, month, year) and the day-of-the-week.
 	public static void advance() {
-		// If the day is a Sunday and it's the first day of the month, print "Sunday".
-		// Print "Sunday" if the day is a Sunday, regardless of whether it's the first day of the month.
-        if (dayOfWeek == 0) {
-            System.out.println(dayOfMonth + "/" + month + "/" + year + " Sunday");
-        } else {
-            System.out.println(dayOfMonth + "/" + month + "/" + year);
-        }
+		// Calculate the day of week for January 1st of the current year once
+		int dayOfWeekForJanuary1st = ((year - 1) * 365 + (year - 1) / 4 - (year - 1) / 100 + (year - 1) / 400 + 1) % 7;
 
+		// Adjust the day of week based on the starting day
+		dayOfWeek = (dayOfWeek + dayOfWeekForJanuary1st) % 7;
+	
+		// Print the date and day of week with conditional formatting for Sundays
+		System.out.println(dayOfMonth + "/" + month + "/" + year + (dayOfWeek == 0 ? " Sunday" : ""));
+	
 		if (dayOfMonth == nDaysInMonth) {
 			dayOfMonth = 1;
 			if (month == 12) {
@@ -78,14 +79,13 @@ public class Calendar {
 		} else {
 			dayOfMonth++;
 		}
-
-		// Update the day of the week
+	
+		// Update the day of week
 		dayOfWeek = (dayOfWeek + 1) % 7;
-
-		if (month == 12 && dayOfMonth == 31) {
-            System.out.println(dayOfMonth + "/" + month + "/" + year); // Print the last date
-        } else {
-            advance(); // Recursive call for other dates
-        }
+	
+		// Recursive call for subsequent dates (already includes printing the last date)
+		if (month != 12 || dayOfMonth != 31) {
+			advance();
+		}
 	}
 }
