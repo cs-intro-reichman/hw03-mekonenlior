@@ -70,20 +70,21 @@ public class Calendar {
 
     // Returns the number of days in the given month and year
     private static int nDaysInMonth(int curMonth, int startYear) {
-        int days = 0;
         switch (curMonth) {
-            case 4:
-            case 6:
-            case 9:
-            case 11:
-                days = 30;
+            case 1, 3, 5, 7, 8, 10, 12: // January, March, May, July, August, October, and December
+                nDays = 31;
                 break;
-            case 2:
-                days = isLeapYear(curretYear) ? 29 : 28;
+            case 2: // February
+                nDays = isLeapYear(startYear) ? 29 : 28;
+                break;
+            case 4, 6, 9, 11: // April, June, September, and November
+                nDays = 30;
                 break;
             default:
-                days = 31;
+                nDays = 0;
+                System.out.println("Invalid month");
+                break;
         }
-        return days;
+        return nDays;
     }
 }
