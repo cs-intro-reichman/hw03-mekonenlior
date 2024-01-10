@@ -14,7 +14,6 @@ public class LoanCalc {
 	static double low; // Lower bound of the payment in bisection search
 	static double high; // Upper bound of the payment in bisection search
 
-
 	/**
 	 * Gets the loan data and computes the periodical payment.
 	 * Expects to get three command-line arguments: sum of the loan (double),
