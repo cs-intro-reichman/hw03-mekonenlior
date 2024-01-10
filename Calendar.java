@@ -1,91 +1,89 @@
 public class Calendar {
+    static int currentMonth;
+    static int currentDay;
+    static int startYear;
+    static int curretYear;
+    static int endYear;
+    static int currentDayOfTheWeek;
+    static int nDaysInMonth;
+    static boolean isLeapYear;
+    static int nDays;
 
-	static int dayOfMonth = 1;
-	static int month = 1;
-	static int dayOfWeek;
-	static int year;
-	static int nDaysInMonth = 31;
+    public static void main(String args[]) {
+        startYear = 1990;
+        curretYear = Integer.parseInt(args[0]);
+        endYear = curretYear + 1;
+        advance();
+    }
 
-	public static void main(String[] args) {
-		year = Integer.parseInt(args[0]);
-		advance();
-	}
+    // Advances the date (day, month, year) and the day-of-the-week
+    public static void advance() {
+        currentDayOfTheWeek = 2;
+        while (startYear < endYear) {
+            currentMonth = 1;
+            while (currentMonth <= 12) {
+                currentDay = 1;
+                while (currentDay <= nDaysInMonth(currentMonth, startYear)) {
+                    if (startYear == curretYear) {
+                        if (currentDayOfTheWeek <= 7) {
+                            System.out.print(currentDay + "/" + currentMonth + "/" + startYear);
+                            if (currentDayOfTheWeek == 1) {
+                                System.out.print(" Sunday");
+                                currentDay++;
+                                currentDayOfTheWeek++;
+                            } else {
+                                currentDay++;
+                                currentDayOfTheWeek++;
+                            }
+                            if (currentDayOfTheWeek > 7) {
+                                currentDayOfTheWeek = 1;
+                            }
+                        }
+                        System.out.println();
+                    } else {
+                        if (currentDayOfTheWeek <= 7) {
+                            if ((currentDay == 1) && (currentDayOfTheWeek) == 1) {
+                                currentDay++;
+                                currentDayOfTheWeek++;
+                            } else {
+                                currentDay++;
+                                currentDayOfTheWeek++;
+                            }
+                            if (currentDayOfTheWeek > 7) {
+                                currentDayOfTheWeek = 1;
+                            }
+                        }
+                    }
+                }
+                currentMonth++;
+            }
+            startYear++;
+        }
+    }
 
-	// Tests the isLeapYear function.
-	public static void isLeapYearTest(int year) {
-		String commonOrLeap = isLeapYear(year) ? "leap" : "common";
-		System.out.println(year + " is a " + commonOrLeap + " year");
-	}
+    // Returns true if the given year is a leap year, false otherwise
+    private static boolean isLeapYear(int year) {
+        isLeapYear = ((year % 400) == 0);
+        isLeapYear = isLeapYear || ((year % 4) == 0 && (year % 100) != 0);
+        return isLeapYear;
+    }
 
-	// Tests the nDaysInMonth function.
-	public static void nDaysInMonthTest(int year) {
-		for (int month = 1; month <= 12; month++) {
-			System.out.println("Month " + month + " has " + nDaysInMonth(month, year) + " days");
-		}
-	}
-
-	// Returns true if the given year is a leap year, false otherwise.
-	public static boolean isLeapYear(int year) {
-		return (year % 4 == 0);
-	}
-
-	// Returns the number of days in the given month and year.
-	public static int nDaysInMonth(int month, int year) {
-		int days = 0;
-		switch (month) {
-			case 4:
-			case 6:
-			case 9:
-			case 11:
-				days = 30;
-				break;
-			case 1:
-			case 3:
-			case 5:
-			case 7:
-			case 8:
-			case 10:
-			case 12:
-				days = 31;
-				break;
-			case 2:
-				days = isLeapYear(year) ? 29 : 28;
-				break;
-		}
-		return days;
-
-	}
-
-	// Advances the date (day, month, year) and the day-of-the-week.
-	public static void advance() {
-		// Calculate the day of week for January 1st of the current year once
-		int dayOfWeekForJanuary1st = ((year - 1) * 365 + (year - 1) / 4 - (year - 1) / 100 + (year - 1) / 400 + 1) % 7;
-
-		// Adjust the day of week based on the starting day
-		dayOfWeek = (dayOfWeek + dayOfWeekForJanuary1st) % 7;
-	
-		// Print the date and day of week with conditional formatting for Sundays
-		System.out.println(dayOfMonth + "/" + month + "/" + year + (dayOfWeek == 0 ? " Sunday" : ""));
-	
-		if (dayOfMonth == nDaysInMonth) {
-			dayOfMonth = 1;
-			if (month == 12) {
-				month = 1;
-				year++;
-			} else {
-				month++;
-			}
-			nDaysInMonth = nDaysInMonth(month, year); // Update the number of days in the new month
-		} else {
-			dayOfMonth++;
-		}
-	
-		// Update the day of week
-		dayOfWeek = (dayOfWeek + 1) % 7;
-	
-		// Recursive call for subsequent dates (already includes printing the last date)
-		if (month != 12 || dayOfMonth != 31) {
-			advance();
-		}
-	}
+    // Returns the number of days in the given month and year
+    private static int nDaysInMonth(int curMonth, int startYear) {
+        int days = 0;
+        switch (curMonth) {
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                days = 30;
+                break;
+            case 2:
+                days = isLeapYear(curretYear) ? 29 : 28;
+                break;
+            default:
+                days = 31;
+        }
+        return days;
+    }
 }
