@@ -5,6 +5,15 @@ public class LoanCalc {
 
 	static double epsilon = 0.001; // The computation tolerance (estimation error)
 	static int iterationCounter; // Monitors the efficiency of the calculation
+	static int n; // Number of periods
+	static double g; // Periodic payment (used within calculations)
+	static double loan; // Loan amount
+	static double rate; // Periodic interest rate (as a percentage)
+	static double payment; // Calculated periodic payment
+	static double endBalance; // Ending balance of the loan
+	static double low; // Lower bound of the payment in bisection search
+	static double high; // Upper bound of the payment in bisection search
+
 
 	/**
 	 * Gets the loan data and computes the periodical payment.
@@ -40,19 +49,13 @@ public class LoanCalc {
 	 */
 	// Side effect: modifies the class variable iterationCounter.
 	public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
+		g = loan / n;
 		iterationCounter = 0;
-		double guess = loan / n;
-		double balance;
-
-		do {
-			balance = endBalance(loan, rate, n, guess);
-			if (Math.abs(balance) > epsilon) {
-				guess += balance / n; // Adjust the guess based on the balance
-				iterationCounter++;
-			}
-		} while (Math.abs(balance) > epsilon);
-
-		return guess;
+		while (endBalance(loan, rate, n, g) > epsilon) {
+			g += epsilon;
+			iterationCounter++;
+		}
+		return g;
 	}
 
 	/**
@@ -64,20 +67,20 @@ public class LoanCalc {
 	// Side effect: modifies the class variable iterationCounter.
 	public static double bisectionSolver(double loan, double rate, int n, double epsilon) {
 		iterationCounter = 0;
-		double low = loan / n;
-		double high = loan;
-		double guess = (low + high) / 2;
-
+		low = loan / n;
+		high = loan;
+		g = (low + high) / 2;
+		// logic of the bisection search
 		while ((high - low) > epsilon) {
-			if (endBalance(loan, rate, n, guess) * endBalance(loan, rate, n, low) > 0) {
-				low = guess;
+			if (endBalance(loan, rate, n, g) * endBalance(loan, rate, n, low) > 0) {
+				low = g;
 			} else {
-				high = guess;
+				high = g;
 			}
-			guess = (low + high) / 2;
+			g = (low + high) / 2;
 			iterationCounter++;
 		}
-		return guess;
+		return g;
 	}
 
 	/**
@@ -87,10 +90,10 @@ public class LoanCalc {
 	 * periodical payment.
 	 */
 	private static double endBalance(double loan, double rate, int n, double payment) {
-		double balance = loan;
+		endBalance = loan;
 		for (int i = 0; i < n; i++) {
-			balance = balance * (1 + rate / 1200) - payment;
+			endBalance = (endBalance - payment) * (1 + rate / 100);
 		}
-		return balance;
+		return endBalance;
 	}
 }
