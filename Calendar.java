@@ -59,11 +59,12 @@ public class Calendar {
 	// Advances the date (day, month, year) and the day-of-the-week.
 	public static void advance() {
 		// If the day is a Sunday and it's the first day of the month, print "Sunday".
-		if (dayOfWeek == 0 && dayOfMonth == 1) {
-			System.out.println(dayOfMonth + "/" + month + "/" + year + " Sunday");
-		} else {
-			System.out.println(dayOfMonth + "/" + month + "/" + year);
-		}
+		// Print "Sunday" if the day is a Sunday, regardless of whether it's the first day of the month.
+        if (dayOfWeek == 0) {
+            System.out.println(dayOfMonth + "/" + month + "/" + year + " Sunday");
+        } else {
+            System.out.println(dayOfMonth + "/" + month + "/" + year);
+        }
 
 		if (dayOfMonth == nDaysInMonth) {
 			dayOfMonth = 1;
